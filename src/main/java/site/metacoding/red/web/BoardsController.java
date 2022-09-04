@@ -1,14 +1,20 @@
 package site.metacoding.red.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
+import site.metacoding.red.domain.boards.Boards;
 import site.metacoding.red.domain.boards.BoardsDao;
+import site.metacoding.red.domain.boards.mapper.BoardsOrm;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 
@@ -23,7 +29,8 @@ public class BoardsController {
 	//@PostMapping("/boards/{id}/update")
 
 	@GetMapping({"/","/boards"})
-	public String getBoardList() {
+	public String getBoardList(Model model) {
+		model.addAttribute("boardsList", boardsDao.findAll());
 		return "boards/main";
 	}
 	
