@@ -37,8 +37,6 @@ public class UsersController {
 		}else {
 			return "redirect:/loginForm"; //로그인 잘 안되서 다시 로그인하라고
 		}
-			
-		
 	}
 	
 	@PostMapping("/join")
