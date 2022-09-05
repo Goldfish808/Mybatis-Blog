@@ -11,13 +11,8 @@ import site.metacoding.red.domain.users.Users;
 
 @Getter
 @Setter
-public class BoardsOrm {
+public class MainView {
 	private Integer id;
 	private String title;
-	private String content;
-	private Integer userId;
 	private String username;
-	private String password;
-	private String email;
-	
 }

@@ -5,10 +5,8 @@
 <mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
 
 	<insert id="insert">
-		INSERT INTO boards(id, title, content, usersId,
-		createdAt)
-		VALUES (boards_seq.nextval, #{title}, #{content}, #{id},
-		sysdate)
+		INSERT INTO boards(id, title, content, usersId,	createdAt)
+		VALUES (boards_seq.nextval, #{title}, #{content}, #{usersId}, sysdate)
 	</insert>
 
 	<select id="findById"
@@ -16,10 +14,19 @@
 
 	</select>
 
-	<select id="findAll"	resultType="site.metacoding.red.domain.boards.mapper.BoardsOrm">
+	<select id="findAll"
+		resultType="site.metacoding.red.domain.boards.mapper.MainView">
+		<!-- 
 		SELECT b.id, b.title, b.content, u.username
 		FROM boards b, users u
 		WHERE b.usersId = u.id
+		 -->
+		 SELECT b.id, b.title, u.username
+		 FROM boards b
+		 INNER JOIN users u
+		 ON b.usersId = u.id
+		 ORDER BY b.id desc
+		
 	</select>
 
 	<update id="update">

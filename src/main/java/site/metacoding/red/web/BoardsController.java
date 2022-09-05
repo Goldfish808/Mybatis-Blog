@@ -14,26 +14,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import lombok.RequiredArgsConstructor;
 import site.metacoding.red.domain.boards.Boards;
 import site.metacoding.red.domain.boards.BoardsDao;
-import site.metacoding.red.domain.boards.mapper.BoardsOrm;
+import site.metacoding.red.domain.boards.mapper.MainView;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 
-@RequiredArgsConstructor	
+@RequiredArgsConstructor
 @Controller
 public class BoardsController {
-	
+
 	private final BoardsDao boardsDao;
 	private final HttpSession session;
-	
-	//@PostMapping("/boards/{id}/delete")
-	//@PostMapping("/boards/{id}/update")
 
-	@GetMapping({"/","/boards"})
+	// @PostMapping("/boards/{id}/delete")
+	// @PostMapping("/boards/{id}/update")
+
+	@GetMapping({ "/", "/boards" })
 	public String getBoardList(Model model) {
-		model.addAttribute("boardsList", boardsDao.findAll());
+		//model.addAttribute("boardsList", boardsDao.findAll());
+		List<MainView> boardsList = boardsDao.findAll();
+		model.addAttribute("boardsList",boardsList);
 		return "boards/main";
 	}
-	
+
 	@GetMapping("/boards/{id}")
 	public String getBoardList(@PathVariable Integer id) {
 		return "boards/detail";
@@ -41,22 +43,43 @@ public class BoardsController {
 
 	@GetMapping("/boards/writeForm")
 	public String writeForm() {
-		Users userPS= (Users) session.getAttribute("principal");
-		//주소로 강제로 접근하는 것을 막기 위함
-		if(userPS != null) {
-			return "boards/writeForm";	
-		}else { //userPS 가 null 이면 로그인 안된상태, 메인페이지로 감
+		Users principal = (Users) session.getAttribute("principal");
+		// 주소로 강제로 접근하는 것을 막기 위함
+//		if (principal != null) {
+//			return "boards/writeForm";
+//		} else { // userPS 가 null 이면 로그인 안된상태, 메인페이지로 감
+//			return "redirect:/";
+//		}
+		if (principal == null) {	// userPS 가 null 이면 로그인 안된상태, 메인페이지로 감
 			return "redirect:/";
 		}
+
+		return "boards/writeForm";
 	}
+
+	@PostMapping("/boards")
+	public String writeBoards(WriteDto writeDto) {
+		// Users userPS= (Users) session.getAttribute("principal");
+		// writeDto.setId(userPS.getId());
+
+		
+		// 1번 세션에 접근해서 세션값을 확인한다. 그 때 Users로 다운캐스팅하고 키값은 principal로 한다
+		
+		// 2번 principal null 인지 확인하고, null이면 loginForm 리다이렉션 해준다.
+		
+		// 3번 BoardsDao 접근해서 insert 메서드를 호출한다.
+		// 조건 : dto 를 entity로 변환해서 인수로 담아준다.
+		// 조건 : entitiy에는 세션의 principal에 getId가 필요하다.
+		
+		Users principal = (Users) session.getAttribute("principal");
+		
+		if(principal == null ) {
+			return "redirect:/";
+		}
+		
+		boardsDao.insert(writeDto.toEntity(principal.getId()));
 	
-	@PostMapping("/boards/insert")
-	public String writeForm(WriteDto writeDto) {
-		Users userPS= (Users) session.getAttribute("principal");
-		writeDto.setId(userPS.getId());
-		boardsDao.insert(writeDto);
 		return "redirect:/";
 	}
-	
-	
+
 }

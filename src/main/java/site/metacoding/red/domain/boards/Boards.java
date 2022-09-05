@@ -2,13 +2,23 @@ package site.metacoding.red.domain.boards;
 
 import java.sql.Timestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Boards {
 	private Integer id;
 	private String title;
 	private String content;
-	private Integer userId;
+	private Integer usersId;
 	private Timestamp createdAt;
+	
+	// @AllArgs... 랑 @Setter 대신 사용, 딱 넣을것만 받을 수 있기 때문에 
+	public Boards(String title, String content, Integer usersId) {
+		this.title = title;
+		this.content = content;
+		this.usersId = usersId;
+	}	
+	
 }
