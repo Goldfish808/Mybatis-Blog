@@ -17,6 +17,7 @@ import site.metacoding.red.domain.boards.BoardsDao;
 import site.metacoding.red.domain.boards.mapper.MainView;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
+import site.metacoding.red.web.dto.response.boards.MainDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,15 +30,20 @@ public class BoardsController {
 	// @PostMapping("/boards/{id}/update")
 
 	@GetMapping({ "/", "/boards" })
-	public String getBoardList(Model model) {
+	public String getBoardList(Model model, Integer page) {//사용자
 		//model.addAttribute("boardsList", boardsDao.findAll());
-		List<MainView> boardsList = boardsDao.findAll();
+		if(page==null) page = 0;
+		int startNum = page * 5;
+		List<MainDto> boardsList = boardsDao.findAll(startNum);
 		model.addAttribute("boardsList",boardsList);
 		return "boards/main";
 	}
 
+
 	@GetMapping("/boards/{id}")
-	public String getBoardList(@PathVariable Integer id) {
+	public String getBoardList(@PathVariable Integer id, Model model) {
+		
+		model.addAttribute("boardsContent",boardsDao.findById(id));
 		return "boards/detail";
 	}
 

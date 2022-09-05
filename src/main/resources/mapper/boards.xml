@@ -11,11 +11,13 @@
 
 	<select id="findById"
 		resultType="site.metacoding.red.domain.boards.Boards">
-
+		SELECT title, content
+		FROM boards
+		WHERE id = #{id}
 	</select>
 
 	<select id="findAll"
-		resultType="site.metacoding.red.domain.boards.mapper.MainView">
+		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
 		<!-- 
 		SELECT b.id, b.title, b.content, u.username
 		FROM boards b, users u
@@ -26,7 +28,8 @@
 		 INNER JOIN users u
 		 ON b.usersId = u.id
 		 ORDER BY b.id desc
-		
+		 OFFSET #{startNum} ROWS FETCH NEXT 5 ROWS ONLY
+		 <!-- OFFSET 을 추가했음 페이징함수, -->
 	</select>
 
 	<update id="update">

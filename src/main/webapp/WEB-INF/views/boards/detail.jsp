@@ -6,11 +6,11 @@
 <div class="container">
 	<br /> <br />
 	<div>
-		<h3>제목입니다.</h3>
+		<h3>${boardsContent.title}</h3>
 	</div>
 	<hr/>
 
-	<div>내용입니다</div>
+	<div>${boardsContent.content}</div>
 
 
 </div>
