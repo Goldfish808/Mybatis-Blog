@@ -18,6 +18,7 @@ import site.metacoding.red.domain.boards.mapper.MainView;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.boards.MainDto;
+import site.metacoding.red.web.dto.response.boards.PagingDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,13 +30,31 @@ public class BoardsController {
 	// @PostMapping("/boards/{id}/delete")
 	// @PostMapping("/boards/{id}/update")
 
+	//http://localhost:8000/?page=1
 	@GetMapping({ "/", "/boards" })
 	public String getBoardList(Model model, Integer page) {//사용자
 		//model.addAttribute("boardsList", boardsDao.findAll());
 		if(page==null) page = 0;
-		int startNum = page * 5;
+		int startNum = page * 3;
 		List<MainDto> boardsList = boardsDao.findAll(startNum);
+		PagingDto paging = boardsDao.paging(page);
+		
+		final int blockCount = 5;
+		
+		int currentBlock = page/blockCount;
+		int startPageNum = 1 + blockCount *currentBlock;
+		int lastPageNum = 5 + blockCount *currentBlock;
+		paging.setLastPageNum(paging.getBlockCount());
+		if(paging.getTotalPage() < lastPageNum) {
+			lastPageNum = paging.getTotalPage();
+		}
+		paging.setBlockCount(blockCount);
+		paging.setCurrentBlock(currentBlock);
+		paging.setStartPageNum(startPageNum);
+		paging.setLastPageNum(lastPageNum);
+		
 		model.addAttribute("boardsList",boardsList);
+		model.addAttribute("paging",paging);
 		return "boards/main";
 	}
 

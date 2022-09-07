@@ -4,9 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
 
+	<select id="paging" resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
+		select totalCount, totalPage, currentPage,
+		decode(currentPage, 0 , 1, 0) first,
+		decode(currentPage, totalPage-1, 1, 0) last
+		from
+		(
+		select count(*) totalCount, ceil(count(*)/3) totalPage, #{page} currentPage, 0
+		first, 0 last
+		from boards
+		)
+	</select>
+
 	<insert id="insert">
-		INSERT INTO boards(id, title, content, usersId,	createdAt)
-		VALUES (boards_seq.nextval, #{title}, #{content}, #{usersId}, sysdate)
+		INSERT INTO boards(id, title, content,
+		usersId,createdAt)
+		VALUES (boards_seq.nextval, #{title}, #{content},
+		#{usersId}, sysdate)
 	</insert>
 
 	<select id="findById"
@@ -18,18 +32,15 @@
 
 	<select id="findAll"
 		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
-		<!-- 
-		SELECT b.id, b.title, b.content, u.username
-		FROM boards b, users u
-		WHERE b.usersId = u.id
-		 -->
-		 SELECT b.id, b.title, u.username
-		 FROM boards b
-		 INNER JOIN users u
-		 ON b.usersId = u.id
-		 ORDER BY b.id desc
-		 OFFSET #{startNum} ROWS FETCH NEXT 5 ROWS ONLY
-		 <!-- OFFSET 을 추가했음 페이징함수, -->
+		<!-- SELECT b.id, b.title, b.content, u.username FROM boards b, users u 
+			WHERE b.usersId = u.id -->
+		SELECT b.id, b.title, u.username
+		FROM boards b
+		INNER JOIN users u
+		ON b.usersId = u.id
+		ORDER BY b.id desc
+		OFFSET #{startNum} ROWS FETCH NEXT 3 ROWS ONLY
+		<!-- OFFSET 을 추가했음 페이징함수, -->
 	</select>
 
 	<update id="update">

@@ -33,10 +33,52 @@
 		</tbody>
 	</table>
 
-	<h2>${param.page}</h2>
+	<div style="backgound-color: grey;">
+		<h3>totalCount : ${paging.totalCount}</h3>
+		<h3>totalPage : ${paging.totalPage}</h3>
+		<h3>currentPage : ${paging.currentPage}</h3>
+		<h3>islast: ${paging.last}</h3>
+		<h3>isFirst: ${paging.first}</h3>
+	</div>
+
+
 	<ul class="pagination">
-		<li class="page-item"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li>
-		<li class="page-item"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li>
+<%-- 		<c:choose> --%>
+<%-- 			<c:when test="${paging.first}"> --%>
+<%-- 			<li class="page-item disabled"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:otherwise> --%>
+<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
+<%-- 			</c:otherwise> --%>
+<%-- 		</c:choose> --%>
+
+<%-- 		<c:forEach var="pag" begin="1" end="${paging.totalPage}" step="1"> --%>
+<!-- 			<div> -->
+<%-- 				--- <a href="/?page=${pag-1}">${pag}</a> --- --%>
+<!-- 			</div> -->
+<%-- 		</c:forEach> --%>
+<%-- 		<c:choose> --%>
+<%-- 			<c:when test="${paging.last}"> --%>
+<%-- 				<li class="page-item disabled"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:otherwise> --%>
+<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
+<%-- 			</c:otherwise> --%>
+<%-- 		</c:choose> --%>
+
+		<ul class="pagination">
+			<li class='page-item ${paging.first ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage - 1}">Previous</a></li>
+			
+			<c:forEach var="pag" begin="${paging.startPageNum}" end="${paging.lastPageNum}" step="1">
+				<div>
+					<li class='page-item ${paging.currentPage == pag-1 ? "active" : ""}'><a class="page-link" href="/?page=${pag-1}"> ${pag}</a></li>
+				</div>
+			</c:forEach>
+			
+			<li class='page-item ${paging.last ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage + 1}">Next</a></li>
+		</ul>
+
+
 	</ul>
 </div>
 

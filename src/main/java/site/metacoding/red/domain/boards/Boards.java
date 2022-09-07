@@ -21,6 +21,5 @@ public class Boards {
 		this.title = title;
 		this.content = content;
 		this.usersId = usersId;
-	}	
-	
+	}
 }
