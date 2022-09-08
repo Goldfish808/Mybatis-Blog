@@ -2,6 +2,8 @@ package site.metacoding.red.domain.boards;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import site.metacoding.red.domain.boards.mapper.MainView;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.boards.MainDto;
@@ -13,5 +15,6 @@ public interface BoardsDao {
 	public List<MainDto> findAll(int startNum);
 	public void update(Boards boards); // DTO 생각해보기
 	public void delete(Integer id);
-	public PagingDto paging(int page);
+	public PagingDto paging(@Param("page")int page, @Param("keyword")String keyword);
+	public List<MainDto> findSearch(@Param("startNum")int StartNum, @Param("keyword")String keyword);
 }

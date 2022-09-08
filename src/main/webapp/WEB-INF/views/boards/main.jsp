@@ -3,6 +3,17 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
+<br>
+<div class="d-flex justify-content-end">
+<div style="width:300px;">
+		<form class="d-flex" method="get" action="/"> <!-- 쿼리스트링으로 할거임 -->
+			<input class="form-control me-2" type="text" placeholder="Search" name="keyword">
+			<button class="btn btn-primary" type="submit">Search</button>
+		</form>
+	</div>
+</div>
+	
+
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -33,54 +44,57 @@
 		</tbody>
 	</table>
 
-<!-- 	<div style="backgound-color: grey;"> -->
-<%-- 		<h3>totalCount : ${paging.totalCount}</h3> --%>
-<%-- 		<h3>totalPage : ${paging.totalPage}</h3> --%>
-<%-- 		<h3>currentPage : ${paging.currentPage}</h3> --%>
-<%-- 		<h3>islast: ${paging.last}</h3> --%>
-<%-- 		<h3>isFirst: ${paging.first}</h3> --%>
-<!-- 	</div> -->
+	<!-- 	<div style="backgound-color: grey;"> -->
+	<%-- 		<h3>totalCount : ${paging.totalCount}</h3> --%>
+	<%-- 		<h3>totalPage : ${paging.totalPage}</h3> --%>
+	<%-- 		<h3>currentPage : ${paging.currentPage}</h3> --%>
+	<%-- 		<h3>islast: ${paging.last}</h3> --%>
+	<%-- 		<h3>isFirst: ${paging.first}</h3> --%>
+	<!-- 	</div> -->
 
 
-<!-- 	<ul class="pagination"> -->
-<%-- 		<c:choose> --%>
-<%-- 			<c:when test="${paging.first}"> --%>
-<%-- 			<li class="page-item disabled"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:otherwise> --%>
-<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
-<%-- 			</c:otherwise> --%>
-<%-- 		</c:choose> --%>
+	<!-- 	<ul class="pagination"> -->
+	<%-- 		<c:choose> --%>
+	<%-- 			<c:when test="${paging.first}"> --%>
+	<%-- 			<li class="page-item disabled"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
+	<%-- 			</c:when> --%>
+	<%-- 			<c:otherwise> --%>
+	<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
+	<%-- 			</c:otherwise> --%>
+	<%-- 		</c:choose> --%>
 
-<%-- 		<c:forEach var="pag" begin="1" end="${paging.totalPage}" step="1"> --%>
-<!-- 			<div> -->
-<%-- 				--- <a href="/?page=${pag-1}">${pag}</a> --- --%>
-<!-- 			</div> -->
-<%-- 		</c:forEach> --%>
-<%-- 		<c:choose> --%>
-<%-- 			<c:when test="${paging.last}"> --%>
-<%-- 				<li class="page-item disabled"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:otherwise> --%>
-<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
-<%-- 			</c:otherwise> --%>
-<%-- 		</c:choose> --%>
+	<%-- 		<c:forEach var="pag" begin="1" end="${paging.totalPage}" step="1"> --%>
+	<!-- 			<div> -->
+	<%-- 				--- <a href="/?page=${pag-1}">${pag}</a> --- --%>
+	<!-- 			</div> -->
+	<%-- 		</c:forEach> --%>
+	<%-- 		<c:choose> --%>
+	<%-- 			<c:when test="${paging.last}"> --%>
+	<%-- 				<li class="page-item disabled"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
+	<%-- 			</c:when> --%>
+	<%-- 			<c:otherwise> --%>
+	<%-- 				<li class="page-item"><a class="page-link" href="/?page=${param.page + 1}">Next</a></li> --%>
+	<%-- 			</c:otherwise> --%>
+	<%-- 		</c:choose> --%>
 
-<div class="d-flex justify-content-center">
+	<div class="d-flex justify-content-center">
 		<ul class="pagination">
-			<li class='page-item ${paging.first ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage - 1}">Previous</a></li>
-			
+			<li class='page-item ${paging.first ? "disabled" : ""}'><a class="page-link"
+				href="/?page=${paging.currentPage - 1}&keyword=${paging.keyword}">Previous</a></li>
+
 			<c:forEach var="pag" begin="${paging.startPageNum}" end="${paging.lastPageNum}" step="1">
 				<div>
-					<li class='page-item ${paging.currentPage == pag-1 ? "active" : ""}'><a class="page-link" href="/?page=${pag-1}"> ${pag}</a></li>
+					<li class='page-item ${paging.currentPage == pag -1 ? "active" : ""}'><a class="page-link"
+						href="/?page=${pag-1}&keyword=${paging.keyword}"> ${pag}</a></li>
 				</div>
 			</c:forEach>
-			
-			<li class='page-item ${paging.last ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage + 1}">Next</a></li>
-		</ul>
-</div>
 
-<!-- 	</ul> -->
+			<li class='page-item ${paging.last ? "disabled" : ""}'><a class="page-link"
+				href="/?page=${paging.currentPage + 1}&keyword=${paging.keyword}">Next</a></li>
+		</ul>
+	</div>
+
+	<!-- 	</ul> -->
 </div>
 
 <%@ include file="../layout/footer.jsp"%>

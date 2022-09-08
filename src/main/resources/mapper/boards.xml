@@ -4,15 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
 
-	<select id="paging" resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
+	<select id="paging"
+		resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
 		select totalCount, totalPage, currentPage,
 		decode(currentPage, 0 , 1, 0) first,
 		decode(currentPage, totalPage-1, 1, 0) last
 		from
 		(
-		select count(*) totalCount, ceil(count(*)/3) totalPage, #{page} currentPage, 0
-		first, 0 last
-		from boards
+		select count(*) totalCount, ceil(count(*)/3) totalPage,
+		#{page} currentPage, 0 first, 0 last
+		FROM boards
+		<if test=" keyword != null ">
+		WHERE title like '%'|| #{keyword} ||'%'
+		</if>
 		)
 	</select>
 
@@ -37,15 +41,34 @@
 		SELECT b.id, b.title, u.username
 		FROM boards b
 		INNER JOIN users u
-		ON b.usersId = u.id
+		ON
+		b.usersId = u.id
 		ORDER BY b.id desc
+		OFFSET #{startNum} ROWS FETCH NEXT 3
+		ROWS ONLY
+		<!-- OFFSET 을 추가했음 페이징함수, -->
+	</select>
+
+	<select id="findSearch"
+		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
+		<!-- SELECT b.id, b.title, b.content, u.username FROM boards b, users u 
+			WHERE b.usersId = u.id -->
+		SELECT b.id, b.title, u.username
+		FROM boards b
+		INNER JOIN users u
+		ON
+		b.usersId = u.id
+		WHERE title like '%'||#{keyword}||'%'
+		ORDER BY b.id
+		desc
 		OFFSET #{startNum} ROWS FETCH NEXT 3 ROWS ONLY
 		<!-- OFFSET 을 추가했음 페이징함수, -->
 	</select>
 
 	<update id="update">
 		UPDATE boards
-		SET title = #{title}, content = #{content}, createdAt = sysdate
+		SET title = #{title}, content =
+		#{content}, createdAt = sysdate
 		WHERE id = #{id}
 	</update>
 

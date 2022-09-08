@@ -85,32 +85,43 @@ public class BoardsController {
 		return "redirect:/";
 	}
 
+	// ﻿http://localhost:8000/?page=0&keyword=스프링  으로 검색할 때
 	// http://localhost:8000/?page=1
 	@GetMapping({ "/", "/boards" })
-	public String getBoardList(Model model, Integer page) {// 사용자
-		// model.addAttribute("boardsList", boardsDao.findAll());
+	public String getBoardList(Model model, Integer page, String keyword) {// 사용자
 		if (page == null)
 			page = 0;
 		int startNum = page * 3;
-		List<MainDto> boardsList = boardsDao.findAll(startNum);
-		PagingDto paging = boardsDao.paging(page);
+		
 
-		final int blockCount = 5;
+		if(keyword == null || keyword.isEmpty()) {
+			List<MainDto> boardsList = boardsDao.findAll(startNum);
+			PagingDto paging = boardsDao.paging(page, null);
 
-		int currentBlock = page / blockCount;
-		int startPageNum = 1 + blockCount * currentBlock; // 1 + 5 * 0 = 1 첫 Current 시작 : 1 / 6 / 11 / 16
-		int lastPageNum = 5 + blockCount * currentBlock; // 5 + 5 * 0 = 5 첫 Currnet 끝 : 5 / 10 / 15 / 20
-		paging.setLastPageNum(paging.getBlockCount());
-		if (paging.getTotalPage() < lastPageNum) {
-			lastPageNum = paging.getTotalPage();
+			paging.blockPoint(page);
+			
+			System.out.println(paging.getTotalPage());
+			model.addAttribute("boardsList", boardsList);
+			model.addAttribute("paging", paging);
+			
+		}else {
+			List<MainDto> boardsList = boardsDao.findSearch(startNum, keyword);
+			
+			PagingDto paging = boardsDao.paging(page, keyword);
+			
+//			System.out.println("==============================");
+//			paging.setKeyword(keyword);
+//			System.out.println("메서드 없느 키워드"+keyword);
+//			System.out.println("키워드 "+paging.getKeyword());
+//			System.out.println("==============================");
+			paging.blockPoint(page);
+			
+			paging.setKeyword(keyword);
+			System.out.println(paging.getTotalPage());
+			model.addAttribute("boardsList", boardsList);
+			model.addAttribute("paging", paging);
 		}
-		paging.setBlockCount(blockCount);
-		paging.setCurrentBlock(currentBlock);
-		paging.setStartPageNum(startPageNum);
-		paging.setLastPageNum(lastPageNum);
-
-		model.addAttribute("boardsList", boardsList);
-		model.addAttribute("paging", paging);
+		// model.addAttribute("boardsList", boardsDao.findAll());
 		return "boards/main";
 	}
 
