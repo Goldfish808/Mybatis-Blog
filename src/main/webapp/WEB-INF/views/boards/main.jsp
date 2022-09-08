@@ -33,16 +33,16 @@
 		</tbody>
 	</table>
 
-	<div style="backgound-color: grey;">
-		<h3>totalCount : ${paging.totalCount}</h3>
-		<h3>totalPage : ${paging.totalPage}</h3>
-		<h3>currentPage : ${paging.currentPage}</h3>
-		<h3>islast: ${paging.last}</h3>
-		<h3>isFirst: ${paging.first}</h3>
-	</div>
+<!-- 	<div style="backgound-color: grey;"> -->
+<%-- 		<h3>totalCount : ${paging.totalCount}</h3> --%>
+<%-- 		<h3>totalPage : ${paging.totalPage}</h3> --%>
+<%-- 		<h3>currentPage : ${paging.currentPage}</h3> --%>
+<%-- 		<h3>islast: ${paging.last}</h3> --%>
+<%-- 		<h3>isFirst: ${paging.first}</h3> --%>
+<!-- 	</div> -->
 
 
-	<ul class="pagination">
+<!-- 	<ul class="pagination"> -->
 <%-- 		<c:choose> --%>
 <%-- 			<c:when test="${paging.first}"> --%>
 <%-- 			<li class="page-item disabled"><a class="page-link" href="/?page=${param.page - 1}">Previous</a></li> --%>
@@ -66,6 +66,7 @@
 <%-- 			</c:otherwise> --%>
 <%-- 		</c:choose> --%>
 
+<div class="d-flex justify-content-center">
 		<ul class="pagination">
 			<li class='page-item ${paging.first ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage - 1}">Previous</a></li>
 			
@@ -77,9 +78,9 @@
 			
 			<li class='page-item ${paging.last ? "disabled" : ""}'><a class="page-link" href="/?page=${paging.currentPage + 1}">Next</a></li>
 		</ul>
+</div>
 
-
-	</ul>
+<!-- 	</ul> -->
 </div>
 
 <%@ include file="../layout/footer.jsp"%>

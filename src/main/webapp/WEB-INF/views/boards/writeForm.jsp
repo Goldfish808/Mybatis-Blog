@@ -4,11 +4,10 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
-	<form action="/boards/" method="post">
+	<form action="/boards/write" method="post">
 		<div class="mb-3 mt-3">
 			<input
-				type="text" class="form-control"
-				placeholder="Enter title" name="title">
+				type="text" class="form-control" placeholder="Enter title" name="title">
 		</div>
 		<div class="mb-3">
 			<textarea class="form-control" rows="8" name="content"></textarea>
